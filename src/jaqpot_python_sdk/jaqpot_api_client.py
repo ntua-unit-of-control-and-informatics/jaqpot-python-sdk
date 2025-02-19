@@ -9,16 +9,16 @@ from jaqpot_api_client import (
     DatasetType,
     DatasetCSV,
 )
-from jaqpot_python_sdk.exceptions.exceptions import (
+from .exceptions.exceptions import (
     JaqpotApiException,
     JaqpotPredictionTimeoutException,
     JaqpotPredictionFailureException,
 )
 
-from jaqpot_python_sdk.helpers.b64encoding import file_to_b64encoding
-from jaqpot_python_sdk.helpers.logging import init_logger
-from jaqpot_python_sdk.helpers.url_utils import add_subdomain
-from jaqpot_python_sdk.jaqpot_api_client_builder import JaqpotApiHttpClientBuilder
+from .helpers.b64encoding import file_to_b64encoding
+from .helpers.logging import init_logger
+from .helpers.url_utils import add_subdomain
+from .jaqpot_api_client_builder import JaqpotApiHttpClientBuilder
 
 QSARTOOLBOX_CALCULATOR_MODEL_ID = 6
 QSARTOOLBOX_MODEL_MODEL_ID = 1837
