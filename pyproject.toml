@@ -30,9 +30,9 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/Alex Arvanitidis/jaqpot-python-sdk#readme"
-Issues = "https://github.com/Alex Arvanitidis/jaqpot-python-sdk/issues"
-Source = "https://github.com/Alex Arvanitidis/jaqpot-python-sdk"
+Documentation = "https://github.com/ntua-unit-of-control-and-informatics/jaqpot-python-sdk#readme"
+Issues = "https://github.com/ntua-unit-of-control-and-informatics/jaqpot-python-sdk/issues"
+Source = "https://github.com/ntua-unit-of-control-and-informatics/jaqpot-python-sdk"
 
 [tool.hatch.version]
 path = "src/jaqpot_python_sdk/__about__.py"
