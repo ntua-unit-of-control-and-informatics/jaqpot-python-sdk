@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "jaqpot-python-sdk"
 dynamic = ["version"]
-description = ''
+description = 'The Jaqpot Python SDK provides an easy-to-use interface for accessing the Jaqpot API, allowing users to upload machine learning models, manage datasets, and make predictions seamlessly. It supports ONNX, fine-grained access control, and subscription-based API access for researchers and developers.'
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
