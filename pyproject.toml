@@ -25,7 +25,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "jaqpot-api-client",
+  "jaqpot-api-client==6.42.3",
   "polling2"
 ]
 
