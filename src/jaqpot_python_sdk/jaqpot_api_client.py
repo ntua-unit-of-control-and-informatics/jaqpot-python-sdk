@@ -1,14 +1,15 @@
 import polling2
 import os
 
+from .patches.patched_dataset import PatchedDataset as Dataset
 from jaqpot_api_client import Model
 from jaqpot_api_client import (
     ModelApi,
     DatasetApi,
-    Dataset,
     DatasetType,
     DatasetCSV,
 )
+from pydantic import field_validator
 from .exceptions.exceptions import (
     JaqpotApiException,
     JaqpotPredictionTimeoutException,

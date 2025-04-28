@@ -25,8 +25,11 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "jaqpot-api-client==6.42.3",
-  "polling2"
+  "jaqpot-api-client>=6.42.3",
+  "polling2",
+  "pydantic",
+  "python-dateutil",
+  "urllib3"
 ]
 
 [project.urls]
