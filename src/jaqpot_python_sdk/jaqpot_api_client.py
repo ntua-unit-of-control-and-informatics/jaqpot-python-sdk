@@ -43,7 +43,7 @@ class JaqpotApiClient:
         The logger object for logging messages.
     """
 
-    def __init__(self, base_url=None, api_url=None, create_logs=False):
+    def __init__(self, base_url=None, api_url=None, create_logs=False, api_key=None, api_secret=None):
         """Initialize the JaqpotApiClient.
 
         Parameters
@@ -64,8 +64,8 @@ class JaqpotApiClient:
         else:
             self.base_url = "https://jaqpot.org"
         self.api_url = api_url or add_subdomain(self.base_url, "api")
-        jaqpot_api_key = os.getenv("JAQPOT_API_KEY")
-        jaqpot_api_secret = os.getenv("JAQPOT_API_SECRET")
+        jaqpot_api_key = api_key or os.getenv("JAQPOT_API_KEY")
+        jaqpot_api_secret = api_secret or os.getenv("JAQPOT_API_SECRET")
         self.http_client = (
             JaqpotApiHttpClientBuilder(host=self.api_url)
             .build_with_api_keys(jaqpot_api_key, jaqpot_api_secret)
