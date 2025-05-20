@@ -9,7 +9,6 @@ from jaqpot_api_client import (
     DatasetType,
     DatasetCSV,
 )
-from pydantic import field_validator
 from .exceptions.exceptions import (
     JaqpotApiException,
     JaqpotPredictionTimeoutException,
