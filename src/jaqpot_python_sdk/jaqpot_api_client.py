@@ -2,6 +2,8 @@ import polling2
 import os
 
 from .patches.patched_dataset import PatchedDataset as Dataset
+from .types import ModelSummary, SearchResult, PredictionResult
+from typing import Optional, Union, List, Dict, Any
 from jaqpot_api_client import Model
 from jaqpot_api_client import (
     ModelApi,
@@ -43,7 +45,7 @@ class JaqpotApiClient:
         The logger object for logging messages.
     """
 
-    def __init__(self, base_url=None, api_url=None, create_logs=False, api_key=None, api_secret=None):
+    def __init__(self, base_url: Optional[str] = None, api_url: Optional[str] = None, create_logs: bool = False, api_key: Optional[str] = None, api_secret: Optional[str] = None) -> None:
         """Initialize the JaqpotApiClient.
 
         Parameters
@@ -72,7 +74,7 @@ class JaqpotApiClient:
             .build()
         )
 
-    def get_model_by_id(self, model_id) -> Model:
+    def get_model_by_id(self, model_id: int) -> Model:
         """Get a model from Jaqpot by its ID.
 
         Parameters
@@ -93,13 +95,13 @@ class JaqpotApiClient:
         model_api = ModelApi(self.http_client)
         response = model_api.get_model_by_id_with_http_info(id=model_id)
         if response.status_code < 300:
-            return response.data.to_dict()
+            return response.data
         raise JaqpotApiException(
-            message=response.data.to_dict().message,
-            status_code=response.status_code.value,
+            message=response.data.to_dict().get('message', 'Unknown error'),
+            status_code=response.status_code,
         )
 
-    def get_model_summary(self, model_id):
+    def get_model_summary(self, model_id: int) -> ModelSummary:
         """Get a summary of a model from Jaqpot by its ID.
 
         Parameters
@@ -109,8 +111,8 @@ class JaqpotApiClient:
 
         Returns
         -------
-        dict
-            A dictionary containing the model summary.
+        ModelSummary
+            A typed dictionary containing the model summary with standardized fields.
 
         Raises
         ------
@@ -128,7 +130,7 @@ class JaqpotApiClient:
         }
         return model_summary
 
-    def get_shared_models(self, page=None, size=None, sort=None, organization_id=None):
+    def get_shared_models(self, page: Optional[int] = None, size: Optional[int] = None, sort: Optional[str] = None, organization_id: Optional[int] = None) -> Any:
         """Get shared models from Jaqpot.
 
         Parameters
@@ -157,13 +159,13 @@ class JaqpotApiClient:
             page=page, size=size, sort=sort, organization_id=organization_id
         )
         if response.status_code < 300:
-            return response
+            return response.data
         raise JaqpotApiException(
-            message=response.data.to_dict().message,
-            status_code=response.status_code.value,
+            message=response.data.to_dict().get('message', 'Unknown error'),
+            status_code=response.status_code,
         )
 
-    def search_models(self, query, page=None, size=None):
+    def search_models(self, query: str, page: Optional[int] = None, size: Optional[int] = None) -> SearchResult:
         """Search for models on Jaqpot based on keywords.
 
         Parameters
@@ -201,7 +203,7 @@ class JaqpotApiClient:
             status_code=response.status_code,
         )
 
-    def get_dataset_by_id(self, dataset_id) -> Dataset:
+    def get_dataset_by_id(self, dataset_id: int) -> Dataset:
         """Get a dataset from Jaqpot by its ID.
 
         Parameters
@@ -224,11 +226,11 @@ class JaqpotApiClient:
         if response.status_code < 300:
             return response.data
         raise JaqpotApiException(
-            message=response.data.to_dict().message,
-            status_code=response.status_code.value,
+            message=response.data.to_dict().get('message', 'Unknown error'),
+            status_code=response.status_code,
         )
 
-    def predict_sync(self, model_id, dataset):
+    def predict_sync(self, model_id: int, dataset: Union[List[Dict[str, Any]], Dict[str, Any]]) -> Any:
         """Make a synchronous prediction with a model on Jaqpot.
 
         Parameters
@@ -267,11 +269,11 @@ class JaqpotApiClient:
             elif dataset.status == "FAILURE":
                 raise JaqpotPredictionFailureException(dataset.failure_reason)
         raise JaqpotApiException(
-            message=response.data.to_dict().message,
-            status_code=response.status_code.value,
+            message=response.data.to_dict().get('message', 'Unknown error'),
+            status_code=response.status_code,
         )
 
-    def predict_async(self, model_id, dataset):
+    def predict_async(self, model_id: int, dataset: Union[List[Dict[str, Any]], Dict[str, Any]]) -> int:
         """Make an asynchronous prediction with a model on Jaqpot.
 
         Parameters
@@ -306,11 +308,11 @@ class JaqpotApiClient:
             dataset_id = int(dataset_location.split("/")[-1])
             return dataset_id
         raise JaqpotApiException(
-            message=response.data.to_dict().message,
-            status_code=response.status_code.value,
+            message=response.data.to_dict().get('message', 'Unknown error'),
+            status_code=response.status_code,
         )
 
-    def predict_with_csv_sync(self, model_id, csv_path):
+    def predict_with_csv_sync(self, model_id: int, csv_path: str) -> Any:
         """Make a synchronous prediction with a model on Jaqpot using a CSV file.
 
         Parameters
@@ -347,8 +349,8 @@ class JaqpotApiClient:
             elif dataset.status == "FAILURE":
                 raise JaqpotPredictionFailureException(message=dataset.failure_reason)
         raise JaqpotApiException(
-            message=response.data.to_dict().message,
-            status_code=response.status_code.value,
+            message=response.data.to_dict().get('message', 'Unknown error'),
+            status_code=response.status_code,
         )
 
     def _get_dataset_with_polling(self, response):
@@ -385,7 +387,7 @@ class JaqpotApiClient:
         dataset = self.get_dataset_by_id(dataset_id)
         return dataset
 
-    def qsartoolbox_calculator_predict_sync(self, smiles, calculator_guid):
+    def qsartoolbox_calculator_predict_sync(self, smiles: str, calculator_guid: str) -> Any:
         """Synchronously predict using the QSAR Toolbox calculator.
 
         Parameters
@@ -404,7 +406,7 @@ class JaqpotApiClient:
         prediction = self.predict_sync(QSARTOOLBOX_CALCULATOR_MODEL_ID, dataset)
         return prediction
 
-    def qsartoolbox_qsar_model_predict_sync(self, smiles, qsar_guid):
+    def qsartoolbox_qsar_model_predict_sync(self, smiles: str, qsar_guid: str) -> Any:
         """Synchronously predict QSAR model results using the QSAR Toolbox.
 
         Parameters
@@ -423,7 +425,7 @@ class JaqpotApiClient:
         prediction = self.predict_sync(QSARTOOLBOX_MODEL_MODEL_ID, dataset)
         return prediction
 
-    def qsartoolbox_profiler_predict_sync(self, smiles, profiler_guid):
+    def qsartoolbox_profiler_predict_sync(self, smiles: str, profiler_guid: str) -> Any:
         """Synchronously predict using the QSAR Toolbox profiler.
 
         Parameters
