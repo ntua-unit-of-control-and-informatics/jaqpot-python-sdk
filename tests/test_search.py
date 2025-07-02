@@ -78,7 +78,7 @@ class TestModelSearch:
             
             # Create client and test search with minimal params
             client = JaqpotApiClient()
-            result = client.search_models(query="nonexistent")
+            client.search_models(query="nonexistent")
             
             # Verify API was called with None for optional params
             mock_model_api.return_value.search_models_with_http_info.assert_called_once_with(
