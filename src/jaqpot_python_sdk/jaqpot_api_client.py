@@ -119,16 +119,12 @@ class JaqpotApiClient:
         """
         model = self.get_model_by_id(model_id)
         model_summary = {
-            "name": model["name"],
-            "modelId": model["id"],
-            "description": model["description"],
-            "type": model["type"],
-            "independentFeatures": [
-                feature["name"] for feature in model["independent_features"]
-            ],
-            "dependentFeatures": [
-                feature["name"] for feature in model["dependent_features"]
-            ],
+            "name": model.name,
+            "modelId": model.id,
+            "description": model.description,
+            "type": model.type,
+            "independentFeatures": model.independent_features,
+            "dependentFeatures": model.dependent_features,
         }
         return model_summary
 
