@@ -173,6 +173,44 @@ class JaqpotApiClient:
             status_code=response.status_code.value,
         )
 
+    def search_models(self, query, page=None, size=None):
+        """Search for models on Jaqpot based on keywords.
+
+        Parameters
+        ----------
+        query : str
+            The search query string to find models by keywords.
+        page : int, optional
+            Page number for pagination. Defaults to 0.
+        size : int, optional
+            Number of models per page. Defaults to 20.
+
+        Returns
+        -------
+        dict
+            A dictionary containing search results with pagination info:
+            - content: List of model summaries matching the search query
+            - totalElements: Total number of matching models
+            - totalPages: Total number of pages
+            - pageSize: Number of models per page
+            - pageNumber: Current page number
+
+        Raises
+        ------
+        JaqpotApiException
+            If the request fails, an exception is raised with the error message and status code.
+        """
+        model_api = ModelApi(self.http_client)
+        response = model_api.search_models_with_http_info(
+            query=query, page=page, size=size
+        )
+        if response.status_code < 300:
+            return response.data.to_dict()
+        raise JaqpotApiException(
+            message=response.data.to_dict().get('message', 'Unknown error'),
+            status_code=response.status_code,
+        )
+
     def get_dataset_by_id(self, dataset_id) -> Dataset:
         """Get a dataset from Jaqpot by its ID.
 
