@@ -117,26 +117,20 @@ class JaqpotApiClient:
         JaqpotApiException
             If the request fails, an exception is raised with the error message and status code.
         """
-        response = self.get_model_by_id(model_id)
-        if response.status_code < 300:
-            model = response.data
-            model_summary = {
-                "name": model.name,
-                "modelId": model.id,
-                "description": model.description,
-                "type": model.type,
-                "independentFeatures": [
-                    feature.name for feature in model.independent_features
-                ],
-                "dependentFeatures": [
-                    feature.name for feature in model.dependent_features
-                ],
-            }
-            return model_summary
-        raise JaqpotApiException(
-            message=response.data.to_dict().message,
-            status_code=response.status_code.value,
-        )
+        model = self.get_model_by_id(model_id)
+        model_summary = {
+            "name": model["name"],
+            "modelId": model["id"],
+            "description": model["description"],
+            "type": model["type"],
+            "independentFeatures": [
+                feature["name"] for feature in model["independent_features"]
+            ],
+            "dependentFeatures": [
+                feature["name"] for feature in model["dependent_features"]
+            ],
+        }
+        return model_summary
 
     def get_shared_models(self, page=None, size=None, sort=None, organization_id=None):
         """Get shared models from Jaqpot.
